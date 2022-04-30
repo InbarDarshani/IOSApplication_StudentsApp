@@ -10,9 +10,6 @@ import UIKit
 class MainViewController: UIViewController, ReplaceSegueProtocol {
 	
 	@IBOutlet weak var container: UIView!
-
-	var listVC: UITableViewController?
-	var aboutVC: UIViewController?
 	
 	func getViewContainer(identifier: String) -> UIView {
 		return container
@@ -34,8 +31,6 @@ class MainViewController: UIViewController, ReplaceSegueProtocol {
 	@IBAction func aboutButton(_ sender: UIButton) {
 		performSegue(withIdentifier: "toAbout", sender: self)
 	}
-	
-	
 }
 
 protocol ReplaceSegueProtocol{
@@ -51,6 +46,11 @@ class ReplaceSegue: UIStoryboardSegue{
 		
 		if let svcp = svc as? ReplaceSegueProtocol{
 			let container = svcp.getViewContainer(identifier: self.identifier!)
+			
+			svc.title = dvc.title
+			svc.navigationItem.title = dvc.title
+			svc.navigationItem.backButtonTitle = ""
+			
 			dvc.view.frame = container.frame
 			dvc.view.frame.origin.x = 0
 			dvc.view.frame.origin.y = 0
