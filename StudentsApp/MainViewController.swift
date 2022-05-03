@@ -10,16 +10,23 @@ import UIKit
 class MainViewController: UIViewController, ReplaceSegueProtocol {
 	
 	@IBOutlet weak var container: UIView!
+	@IBOutlet weak var homeButton: UIButton!
+	@IBOutlet weak var addButton: UIButton!
+	@IBOutlet weak var aboutButton: UIButton!
 	
-	func getViewContainer(identifier: String) -> UIView {
+	func getContainerView(identifier: String) -> UIView {
 		return container
+	}
+	
+	func getContainerViewController(identifier: String) -> UIViewController {
+		return self
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		performSegue(withIdentifier: "toList", sender: self)
 	}
-		
+	
 	@IBAction func homeButton(_ sender: UIButton) {
 		performSegue(withIdentifier: "toList", sender: self)
 	}
@@ -31,30 +38,25 @@ class MainViewController: UIViewController, ReplaceSegueProtocol {
 	@IBAction func aboutButton(_ sender: UIButton) {
 		performSegue(withIdentifier: "toAbout", sender: self)
 	}
-}
-
-protocol ReplaceSegueProtocol{
-	func getViewContainer(identifier:String) ->UIView
-}
-class ReplaceSegue: UIStoryboardSegue{
 	
-	override func perform() {
-		let svc = self.source
-		let dvc = self.destination
-		
-		svc.addChild(dvc)
-		
-		if let svcp = svc as? ReplaceSegueProtocol{
-			let container = svcp.getViewContainer(identifier: self.identifier!)
-			
-			svc.title = dvc.title
-			svc.navigationItem.title = dvc.title
-			svc.navigationItem.backButtonTitle = ""
-			
-			dvc.view.frame = container.frame
-			dvc.view.frame.origin.x = 0
-			dvc.view.frame.origin.y = 0
-			container.addSubview(dvc.view)
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		switch segue.identifier {
+		case "toList":
+			homeButton.isSelected = true
+			addButton.isSelected = false
+			aboutButton.isSelected = false
+		case "toAdd":
+			homeButton.isSelected = false
+			addButton.isSelected = true
+			aboutButton.isSelected = false
+		case "toAbout":
+			homeButton.isSelected = false
+			addButton.isSelected = false
+			aboutButton.isSelected = true
+		default:
+			return
 		}
 	}
+	
 }
+

@@ -17,12 +17,12 @@ class StudentTableViewCell: UITableViewCell {
 
 class StudentsTableViewController: UITableViewController {
 
-	let data = Model.instance.getAll()
+	var data = Model.instance.getAll()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+	
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,7 +34,7 @@ class StudentsTableViewController: UITableViewController {
 		
 		let student = data[indexPath.row]
 		cell.studentName?.text = student.name
-		cell.studentId?.text = String(student.id)
+		cell.studentId?.text = student.id
 		cell.studentImage?.image =  UIImage(named: student.image)
 	
         return cell
@@ -42,26 +42,20 @@ class StudentsTableViewController: UITableViewController {
    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "toDetails"{
-			//let studentDetailsVC = segue.destination as! StudentDetailsViewController
-			//let studentCell = sender as? StudentTableViewCell
 			
 			let destination = segue.destination as? StudentDetailsViewController
 			let studentIndex = tableView.indexPathForSelectedRow!.row
 						
-			destination?.studentName.text = data[studentIndex].name
-			destination?.studentId.text = String(data[studentIndex].id)
-			destination?.studentPhone.text = data[studentIndex].phone
-			destination?.studentImage.image = UIImage(named: data[studentIndex].image)
-			
+			destination?.name = data[studentIndex].name
+			destination?.id = data[studentIndex].id
+			destination?.phone = data[studentIndex].phone
+			destination?.address = data[studentIndex].address
+			destination?.imageName = data[studentIndex].image
 		}
-			
     }
 	
-    
-
 }
 
 
